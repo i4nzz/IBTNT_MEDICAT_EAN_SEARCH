@@ -80,11 +80,13 @@ const styles = StyleSheet.create({
     width: 180,
     height: 180,
     borderWidth: 5,
-    borderColor: '#FFFFFF',
     borderRadius: 90,
     position: 'absolute',
+    borderTopColor: '#FFFFFF',
+    borderRightColor: 'transparent',  // aqui é a parte faltando (25%)
+    borderBottomColor: '#FFFFFF',
+    borderLeftColor: '#FFFFFF',
     borderStyle: 'solid',
-    borderTopColor: 'transparent',
   },
   text: {
     fontSize: 20,
