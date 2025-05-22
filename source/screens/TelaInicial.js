@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, Button, Image, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Button, Image, StyleSheet ,ActivityIndicator } from "react-native";
 import CriarLogin from './Login/CriarLogin' 
 import FazerLogin from "./Login/FazerLogin";
 
