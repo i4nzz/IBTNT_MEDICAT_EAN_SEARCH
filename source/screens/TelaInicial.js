@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { View, Text, Button, Image, StyleSheet ,ActivityIndicator } from "react-native";
-import CriarLogin from './Login/CriarLogin' 
-import FazerLogin from "./Login/FazerLogin";
 
 
 export default function TelaInicial({ navigation }) {
   return (
     <View style={styles.container}>
       <Image 
-        source={require('C:/_source/ProjetosFaculdade/ProjetosH1/medicatEanSearch/source/img/MEDICAT_LOGO.png')} 
+        source={require('../img/MEDICAT_LOGO.png')}
+
         style={styles.image}
       />
       <Text style={styles.title}>Bem-vindo(a) ao Medicat</Text>
@@ -59,8 +58,9 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 50,
     alignItems: 'center',
+    flex: 1
   },
   footerText: {
     fontSize: 14,

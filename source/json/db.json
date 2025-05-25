@@ -1,0 +1,326 @@
+{
+  "Medicamentos": [
+    {
+      "id": 1,
+      "nome": "SIMETICONA",
+      "ean": "EAN-7896422512442",
+      "tipo": "Antiflatulento",
+      "laboratorio": "Vetpharma",
+      "forma_administracao": "Oral - suspensão",
+      "indicacoes": "Alívio de gases e desconforto abdominal em cães e gatos"
+    },
+    {
+      "id": 2,
+      "nome": "BRAVECTO",
+      "ean": "EAN-7898500673020",
+      "tipo": "Antipulgas e Carrapatos",
+      "laboratorio": "MSD Saúde Animal",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Controle e prevenção de pulgas e carrapatos em cães"
+    },
+    {
+      "id": 3,
+      "nome": "FRONTLINE SPOT ON",
+      "ean": "EAN-7896004702423",
+      "tipo": "Antipulgas e Carrapatos",
+      "laboratorio": "Merial",
+      "forma_administracao": "Tópico - aplicação na pele",
+      "indicacoes": "Prevenção e tratamento de infestações por pulgas e carrapatos"
+    },
+    {
+      "id": 4,
+      "nome": "METRONIDAZOL",
+      "ean": "EAN-7898056110025",
+      "tipo": "Antibiótico/Antiparasitário",
+      "laboratorio": "Vetnil",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de infecções bacterianas e protozoárias"
+    },
+    {
+      "id": 5,
+      "nome": "DROGATOL",
+      "ean": "EAN-7898939730011",
+      "tipo": "Anti-inflamatório",
+      "laboratorio": "Vetnil",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Redução de inflamações e dor em cães e gatos"
+    },
+    {
+      "id": 6,
+      "nome": "INTERFENOL",
+      "ean": "EAN-7896225512028",
+      "tipo": "Antiviral/Imunomodulador",
+      "laboratorio": "Medley",
+      "forma_administracao": "Injetável",
+      "indicacoes": "Estimulação do sistema imunológico em animais infectados"
+    },
+    {
+      "id": 7,
+      "nome": "FIPRONIL",
+      "ean": "EAN-7896506320036",
+      "tipo": "Antipulgas",
+      "laboratorio": "Bayer",
+      "forma_administracao": "Tópico",
+      "indicacoes": "Controle e prevenção de pulgas e carrapatos"
+    },
+    {
+      "id": 8,
+      "nome": "VETZINCO",
+      "ean": "EAN-7898510008120",
+      "tipo": "Suplemento mineral",
+      "laboratorio": "Vetnil",
+      "forma_administracao": "Oral - comprimido",
+      "indicacoes": "Suplementação de zinco para a pele e pelagem"
+    },
+    {
+      "id": 9,
+      "nome": "CIMETIDINA",
+      "ean": "EAN-7897000023456",
+      "tipo": "Antiácido",
+      "laboratorio": "Syntec",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de úlceras gástricas e refluxo"
+    },
+    {
+      "id": 10,
+      "nome": "ENROFLOXACINO",
+      "ean": "EAN-7898491234567",
+      "tipo": "Antibiótico",
+      "laboratorio": "Eurofarma",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de infecções bacterianas"
+    },
+    {
+      "id": 11,
+      "nome": "IBUPROFENO VET",
+      "ean": "EAN-7891234567890",
+      "tipo": "Anti-inflamatório não esteroidal",
+      "laboratorio": "Vetpharma",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Alívio de dor e inflamação"
+    },
+    {
+      "id": 12,
+      "nome": "DEXAMETASONA",
+      "ean": "EAN-7897412365487",
+      "tipo": "Corticóide",
+      "laboratorio": "Syntec",
+      "forma_administracao": "Injetável",
+      "indicacoes": "Tratamento de alergias e inflamações"
+    },
+    {
+      "id": 13,
+      "nome": "PRAZIQUANTEL",
+      "ean": "EAN-7898887712345",
+      "tipo": "Antiparasitário",
+      "laboratorio": "Vetnil",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de vermes cestóides"
+    },
+    {
+      "id": 14,
+      "nome": "AMOXICILINA",
+      "ean": "EAN-7894561237890",
+      "tipo": "Antibiótico",
+      "laboratorio": "Eurofarma",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Infecções bacterianas variadas"
+    },
+    {
+      "id": 15,
+      "nome": "CLORIDRATO DE DOXICICLINA",
+      "ean": "EAN-7896543219870",
+      "tipo": "Antibiótico",
+      "laboratorio": "Vetpharma",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de infecções respiratórias e sistêmicas"
+    },
+    {
+      "id": 16,
+      "nome": "CEFALEXINA",
+      "ean": "EAN-7893216549870",
+      "tipo": "Antibiótico",
+      "laboratorio": "Syntec",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Infecções de pele e tecidos moles"
+    },
+    {
+      "id": 17,
+      "nome": "CLORIDRATO DE METOCLOPRAMIDA",
+      "ean": "EAN-7899632587412",
+      "tipo": "Antiemético",
+      "laboratorio": "Vetnil",
+      "forma_administracao": "Oral e injetável",
+      "indicacoes": "Controle de náuseas e vômitos"
+    },
+    {
+      "id": 18,
+      "nome": "CARPROFENO",
+      "ean": "EAN-7897531598420",
+      "tipo": "Anti-inflamatório não esteroidal",
+      "laboratorio": "Bayer",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Alívio de dor e inflamação em cães"
+    },
+    {
+      "id": 19,
+      "nome": "SULFADIAZINA + TRIMETOPRIMA",
+      "ean": "EAN-7898529637410",
+      "tipo": "Antibiótico combinado",
+      "laboratorio": "Vetnil",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de infecções bacterianas diversas"
+    },
+    {
+      "id": 20,
+      "nome": "CLORIDRATO DE CIPROFLOXACINO",
+      "ean": "EAN-7896547891230",
+      "tipo": "Antibiótico",
+      "laboratorio": "Eurofarma",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de infecções bacterianas graves"
+    },
+    {
+      "id": 21,
+      "nome": "VITAMINA E",
+      "ean": "EAN-7897534567890",
+      "tipo": "Suplemento vitamínico",
+      "laboratorio": "Vetpharma",
+      "forma_administracao": "Oral - cápsulas",
+      "indicacoes": "Suporte antioxidante para a saúde da pele e sistema imunológico"
+    },
+    {
+      "id": 22,
+      "nome": "CLORIDRATO DE ONDANSETRONA",
+      "ean": "EAN-7891237894560",
+      "tipo": "Antiemético",
+      "laboratorio": "Syntec",
+      "forma_administracao": "Injetável",
+      "indicacoes": "Prevenção de náuseas e vômitos pós-cirúrgicos"
+    },
+    {
+      "id": 23,
+      "nome": "LORATADINA",
+      "ean": "EAN-7899876543210",
+      "tipo": "Antialérgico",
+      "laboratorio": "Vetnil",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Alívio de sintomas alérgicos em cães e gatos"
+    },
+    {
+      "id": 24,
+      "nome": "TRIFEXIS",
+      "ean": "EAN-7891234561234",
+      "tipo": "Antipulgas, carrapatos e vermífugo",
+      "laboratorio": "Elanco",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Prevenção e controle de pulgas, carrapatos e vermes intestinais"
+    },
+    {
+      "id": 25,
+      "nome": "CLORIDRATO DE FENOTEROL",
+      "ean": "EAN-7894567891234",
+      "tipo": "Broncodilatador",
+      "laboratorio": "Vetpharma",
+      "forma_administracao": "Injetável",
+      "indicacoes": "Tratamento de broncoespasmos em cães"
+    },
+    {
+      "id": 26,
+      "nome": "KETOPROFENO",
+      "ean": "EAN-7898527419630",
+      "tipo": "Anti-inflamatório não esteroidal",
+      "laboratorio": "Bayer",
+      "forma_administracao": "Injetável",
+      "indicacoes": "Alívio de dor e inflamação"
+    },
+    {
+      "id": 27,
+      "nome": "CLORETO DE SÓDIO 0,9%",
+      "ean": "EAN-7891234561111",
+      "tipo": "Solução fisiológica",
+      "laboratorio": "Vetnil",
+      "forma_administracao": "Injetável",
+      "indicacoes": "Hidratação e limpeza de feridas"
+    },
+    {
+      "id": 28,
+      "nome": "PREDNISONA",
+      "ean": "EAN-7896543211111",
+      "tipo": "Corticóide",
+      "laboratorio": "Syntec",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de doenças inflamatórias e autoimunes"
+    },
+    {
+      "id": 29,
+      "nome": "ALBENDAZOL",
+      "ean": "EAN-7897412589630",
+      "tipo": "Antiparasitário",
+      "laboratorio": "Vetpharma",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de vermes intestinais"
+    },
+    {
+      "id": 30,
+      "nome": "CLOROQUINA",
+      "ean": "EAN-7899871236540",
+      "tipo": "Antiparasitário",
+      "laboratorio": "Eurofarma",
+      "forma_administracao": "Comprimido oral",
+      "indicacoes": "Tratamento de doenças parasitárias em animais"
+    }
+  ],
+  "Lojas": [
+    {
+      "id": 1,
+      "nome": "PetCenter Araxá",
+      "endereco": "Rua das Flores, 123 - Araxá, MG",
+      "produtos": [
+        {"medicamentoId": 1, "preco": 42.50},
+        {"medicamentoId": 2, "preco": 150.00},
+        {"medicamentoId": 5, "preco": 32.00},
+        {"medicamentoId": 9, "preco": 27.30},
+        {"medicamentoId": 14, "preco": 48.00},
+        {"medicamentoId": 20, "preco": 65.00},
+        {"medicamentoId": 23, "preco": 22.00},
+        {"medicamentoId": 25, "preco": 55.00},
+        {"medicamentoId": 29, "preco": 37.00}
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "VetMais Produtos",
+      "endereco": "Av. Brasil, 987 - Araxá, MG",
+      "produtos": [
+        {"medicamentoId": 2, "preco": 148.00},
+        {"medicamentoId": 3, "preco": 85.00},
+        {"medicamentoId": 4, "preco": 39.00},
+        {"medicamentoId": 6, "preco": 75.00},
+        {"medicamentoId": 10, "preco": 50.00},
+        {"medicamentoId": 11, "preco": 23.50},
+        {"medicamentoId": 15, "preco": 40.00},
+        {"medicamentoId": 18, "preco": 60.00},
+        {"medicamentoId": 24, "preco": 120.00},
+        {"medicamentoId": 28, "preco": 35.00}
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "AnimalVet Shop",
+      "endereco": "Praça Central, 45 - Araxá, MG",
+      "produtos": [
+        {"medicamentoId": 1, "preco": 44.00},
+        {"medicamentoId": 7, "preco": 80.00},
+        {"medicamentoId": 8, "preco": 15.00},
+        {"medicamentoId": 12, "preco": 48.00},
+        {"medicamentoId": 13, "preco": 30.00},
+        {"medicamentoId": 16, "preco": 37.50},
+        {"medicamentoId": 17, "preco": 22.00},
+        {"medicamentoId": 19, "preco": 45.00},
+        {"medicamentoId": 21, "preco": 29.00},
+        {"medicamentoId": 30, "preco": 50.00}
+      ]
+    }
+  ]
+}
