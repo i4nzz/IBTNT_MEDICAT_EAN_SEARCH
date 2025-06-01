@@ -338,145 +338,145 @@ export default function MedicineStoresScreen({ navigation, route }) {
 }
 
 // Dados de exemplo para quando o endpoint não estiver disponível
-const sampleStoresData = [
-  {
-    id: "1",
-    nome: "PetCenter Araxá",
-    endereco: "Rua das Flores, 123 - Araxá, MG",
-    produtos: [
-      {
-        medicamentoId: 1,
-        preco: 42.5,
-      },
-      {
-        medicamentoId: 2,
-        preco: 150,
-      },
-      {
-        medicamentoId: 5,
-        preco: 32,
-      },
-      {
-        medicamentoId: 9,
-        preco: 27.3,
-      },
-      {
-        medicamentoId: 14,
-        preco: 48,
-      },
-      {
-        medicamentoId: 20,
-        preco: 65,
-      },
-      {
-        medicamentoId: 23,
-        preco: 22,
-      },
-      {
-        medicamentoId: 25,
-        preco: 55,
-      },
-      {
-        medicamentoId: 29,
-        preco: 37,
-      },
-    ],
-  },
-  {
-    id: "2",
-    nome: "VetMais Produtos",
-    endereco: "Av. Brasil, 987 - Araxá, MG",
-    produtos: [
-      {
-        medicamentoId: 2,
-        preco: 148,
-      },
-      {
-        medicamentoId: 3,
-        preco: 85,
-      },
-      {
-        medicamentoId: 4,
-        preco: 39,
-      },
-      {
-        medicamentoId: 6,
-        preco: 75,
-      },
-      {
-        medicamentoId: 10,
-        preco: 50,
-      },
-      {
-        medicamentoId: 11,
-        preco: 23.5,
-      },
-      {
-        medicamentoId: 15,
-        preco: 40,
-      },
-      {
-        medicamentoId: 18,
-        preco: 60,
-      },
-      {
-        medicamentoId: 24,
-        preco: 120,
-      },
-      {
-        medicamentoId: 28,
-        preco: 35,
-      },
-    ],
-  },
-  {
-    id: "3",
-    nome: "AnimalVet Shop",
-    endereco: "Praça Central, 45 - Araxá, MG",
-    produtos: [
-      {
-        medicamentoId: 1,
-        preco: 44,
-      },
-      {
-        medicamentoId: 7,
-        preco: 80,
-      },
-      {
-        medicamentoId: 8,
-        preco: 15,
-      },
-      {
-        medicamentoId: 12,
-        preco: 48,
-      },
-      {
-        medicamentoId: 13,
-        preco: 30,
-      },
-      {
-        medicamentoId: 16,
-        preco: 37.5,
-      },
-      {
-        medicamentoId: 17,
-        preco: 22,
-      },
-      {
-        medicamentoId: 19,
-        preco: 45,
-      },
-      {
-        medicamentoId: 21,
-        preco: 29,
-      },
-      {
-        medicamentoId: 30,
-        preco: 50,
-      },
-    ],
-  },
-]
+// const sampleStoresData = [
+//   {
+//     id: "1",
+//     nome: "PetCenter Araxá",
+//     endereco: "Rua das Flores, 123 - Araxá, MG",
+//     produtos: [
+//       {
+//         medicamentoId: 1,
+//         preco: 42.5,
+//       },
+//       {
+//         medicamentoId: 2,
+//         preco: 150,
+//       },
+//       {
+//         medicamentoId: 5,
+//         preco: 32,
+//       },
+//       {
+//         medicamentoId: 9,
+//         preco: 27.3,
+//       },
+//       {
+//         medicamentoId: 14,
+//         preco: 48,
+//       },
+//       {
+//         medicamentoId: 20,
+//         preco: 65,
+//       },
+//       {
+//         medicamentoId: 23,
+//         preco: 22,
+//       },
+//       {
+//         medicamentoId: 25,
+//         preco: 55,
+//       },
+//       {
+//         medicamentoId: 29,
+//         preco: 37,
+//       },
+//     ],
+//   },
+//   {
+//     id: "2",
+//     nome: "VetMais Produtos",
+//     endereco: "Av. Brasil, 987 - Araxá, MG",
+//     produtos: [
+//       {
+//         medicamentoId: 2,
+//         preco: 148,
+//       },
+//       {
+//         medicamentoId: 3,
+//         preco: 85,
+//       },
+//       {
+//         medicamentoId: 4,
+//         preco: 39,
+//       },
+//       {
+//         medicamentoId: 6,
+//         preco: 75,
+//       },
+//       {
+//         medicamentoId: 10,
+//         preco: 50,
+//       },
+//       {
+//         medicamentoId: 11,
+//         preco: 23.5,
+//       },
+//       {
+//         medicamentoId: 15,
+//         preco: 40,
+//       },
+//       {
+//         medicamentoId: 18,
+//         preco: 60,
+//       },
+//       {
+//         medicamentoId: 24,
+//         preco: 120,
+//       },
+//       {
+//         medicamentoId: 28,
+//         preco: 35,
+//       },
+//     ],
+//   },
+//   {
+//     id: "3",
+//     nome: "AnimalVet Shop",
+//     endereco: "Praça Central, 45 - Araxá, MG",
+//     produtos: [
+//       {
+//         medicamentoId: 1,
+//         preco: 44,
+//       },
+//       {
+//         medicamentoId: 7,
+//         preco: 80,
+//       },
+//       {
+//         medicamentoId: 8,
+//         preco: 15,
+//       },
+//       {
+//         medicamentoId: 12,
+//         preco: 48,
+//       },
+//       {
+//         medicamentoId: 13,
+//         preco: 30,
+//       },
+//       {
+//         medicamentoId: 16,
+//         preco: 37.5,
+//       },
+//       {
+//         medicamentoId: 17,
+//         preco: 22,
+//       },
+//       {
+//         medicamentoId: 19,
+//         preco: 45,
+//       },
+//       {
+//         medicamentoId: 21,
+//         preco: 29,
+//       },
+//       {
+//         medicamentoId: 30,
+//         preco: 50,
+//       },
+//     ],
+//   },
+// ]
 
 const styles = StyleSheet.create({
   container: {
