@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  Modal,
   TextInput,
   Image,
   Alert,
@@ -17,7 +16,6 @@ import {
 import * as ImagePicker from "expo-image-picker"
 // CAMINHO CORRIGIDO para os imports do banco
 import { insertPet, getPets, deletePet, updatePet } from "../lib/database"
-import { getPetMedicines } from "../lib/petMedicinesDatabase"
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window")
 
@@ -186,45 +184,6 @@ export default function Home({ navigation }) {
     })
   }
 
-  const navigateToMedicineStores = async () => {
-    if (pets.length === 0) {
-      Alert.alert("Atenção", "Cadastre um pet primeiro para buscar preços de medicamentos")
-      return
-    }
-
-    try {
-      const pet = pets[0] // Como só permite 1 pet por enquanto
-
-      // Verificar se o pet tem medicamentos cadastrados
-      const petMedicines = await getPetMedicines(pet.id)
-
-      if (petMedicines.length === 0) {
-        Alert.alert(
-          "Sem medicamentos",
-          "Este pet não possui medicamentos cadastrados. Adicione medicamentos primeiro.",
-          [
-            { text: "Cancelar", style: "cancel" },
-            {
-              text: "Adicionar Medicamentos",
-              onPress: () => navigateToMedicines(),
-            },
-          ],
-        )
-        return
-      }
-
-      // Navegar para a tela de lojas com os medicamentos do pet
-      navigation.navigate("MedicineStoresScreen", {
-        petId: pet.id,
-        petName: pet.name,
-        petMedicines: petMedicines,
-      })
-    } catch (error) {
-      console.error("Erro ao buscar medicamentos do pet:", error)
-      Alert.alert("Erro", "Não foi possível carregar os medicamentos do pet")
-    }
-  }
-
   const getPetListData = () => {
     const items = []
 
@@ -313,34 +272,9 @@ export default function Home({ navigation }) {
     )
   }
 
-  const getMedicineOptions = () => {
-    const hasPet = pets.length > 0
-    return [
-      {
-        id: "1",
-        title: hasPet ? "Gerenciar Medicamentos" : "Cadastre um pet primeiro",
-        icon: "💊",
-        onPress: navigateToMedicines,
-      },
-      {
-        id: "2",
-        title: hasPet ? "Buscar Preços nas Lojas" : "Cadastre um pet primeiro",
-        icon: "🏪",
-        onPress: navigateToMedicineStores,
-      },
-    ]
-  }
-
   const renderMedicineItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.listItem}
-      activeOpacity={0.8}
-      onPress={pets.length > 0 ? item.onPress : () => Alert.alert("Atenção", "Cadastre um pet primeiro")}
-    >
-      <View style={styles.itemWithIcon}>
-        <Text style={styles.itemIcon}>{item.icon}</Text>
-        <Text style={styles.text}>{item.title}</Text>
-      </View>
+    <TouchableOpacity style={styles.listItem} activeOpacity={0.8} onPress={navigateToMedicines}>
+      <Text style={styles.text}>{item.title}</Text>
     </TouchableOpacity>
   )
 
@@ -349,6 +283,118 @@ export default function Home({ navigation }) {
       <Text style={styles.text}>{item.title}</Text>
     </TouchableOpacity>
   )
+
+  // Componente do Modal customizado
+  const PetModal = () => {
+    if (!showModal) return null
+
+    return (
+      <View style={styles.modalContainer}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={closeModal}>
+          <TouchableOpacity style={styles.modalContent} activeOpacity={1} onPress={(e) => e.stopPropagation()}>
+            <ScrollView
+              style={styles.modalScrollView}
+              contentContainerStyle={styles.modalScrollContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={styles.modalTitle}>{editMode ? "Editar Pet" : "Cadastrar Pet"}</Text>
+
+              {/* Foto */}
+              <TouchableOpacity style={styles.photoContainer} onPress={pickImage}>
+                {formData.photo ? (
+                  <Image source={{ uri: formData.photo }} style={styles.photoPreview} />
+                ) : (
+                  <View style={styles.photoPlaceholder}>
+                    <Text style={styles.photoPlaceholderText}>📷</Text>
+                    <Text style={styles.photoPlaceholderSubtext}>Adicionar Foto</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+
+              {/* Nome */}
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Nome *</Text>
+                <TextInput
+                  style={styles.input}
+                  value={formData.name}
+                  onChangeText={(text) => setFormData({ ...formData, name: text })}
+                  placeholder="Nome do pet"
+                  placeholderTextColor="#999"
+                />
+              </View>
+
+              {/* Raça */}
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Raça *</Text>
+                <TextInput
+                  style={styles.input}
+                  value={formData.breed}
+                  onChangeText={(text) => setFormData({ ...formData, breed: text })}
+                  placeholder="Raça do pet"
+                  placeholderTextColor="#999"
+                />
+              </View>
+
+              {/* Idade */}
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Idade *</Text>
+                <TextInput
+                  style={styles.input}
+                  value={formData.age}
+                  onChangeText={(text) => setFormData({ ...formData, age: text })}
+                  placeholder="Idade em anos"
+                  placeholderTextColor="#999"
+                  keyboardType="numeric"
+                />
+              </View>
+
+              {/* Tipo de Animal */}
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Tipo de Animal</Text>
+                <View style={styles.radioGroup}>
+                  <TouchableOpacity
+                    style={styles.radioOption}
+                    onPress={() => setFormData({ ...formData, animalType: "cachorro" })}
+                  >
+                    <View style={[styles.radio, formData.animalType === "cachorro" && styles.radioSelected]} />
+                    <Text style={styles.radioText}>🐕 Cachorro</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.radioOption}
+                    onPress={() => setFormData({ ...formData, animalType: "gato" })}
+                  >
+                    <View style={[styles.radio, formData.animalType === "gato" && styles.radioSelected]} />
+                    <Text style={styles.radioText}>🐱 Gato</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* Pedigree */}
+              <TouchableOpacity
+                style={styles.checkboxContainer}
+                onPress={() => setFormData({ ...formData, hasPedigree: !formData.hasPedigree })}
+              >
+                <View style={[styles.checkbox, formData.hasPedigree && styles.checkboxSelected]}>
+                  {formData.hasPedigree && <Text style={styles.checkmark}>✓</Text>}
+                </View>
+                <Text style={styles.checkboxText}>🏆 Tem Pedigree</Text>
+              </TouchableOpacity>
+
+              {/* Botões */}
+              <View style={styles.modalButtons}>
+                <TouchableOpacity style={[styles.modalButton, styles.cancelButton]} onPress={closeModal}>
+                  <Text style={styles.cancelButtonText}>Cancelar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.modalButton, styles.saveButton]} onPress={handleSavePet}>
+                  <Text style={styles.saveButtonText}>{editMode ? "Atualizar" : "Salvar"}</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
   if (loading) {
     return (
@@ -392,7 +438,7 @@ export default function Home({ navigation }) {
           <Text style={styles.sectionTitle}>💊 Medicamentos</Text>
           <View style={styles.flatListContainer}>
             <FlatList
-              data={getMedicineOptions()}
+              data={[{ id: "1", title: pets.length > 0 ? "Gerenciar Medicamentos" : "Cadastre um pet primeiro" }]}
               renderItem={renderMedicineItem}
               keyExtractor={(item) => item.id}
               scrollEnabled={false}
@@ -431,110 +477,8 @@ export default function Home({ navigation }) {
         <Text style={styles.backButtonText}>← Voltar</Text>
       </TouchableOpacity>
 
-      {/* Modal de Cadastro/Editar */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{editMode ? "Editar Pet" : "Cadastrar Pet"}</Text>
-
-            {/* Foto */}
-            <TouchableOpacity style={styles.photoContainer} onPress={pickImage}>
-              {formData.photo ? (
-                <Image source={{ uri: formData.photo }} style={styles.photoPreview} />
-              ) : (
-                <View style={styles.photoPlaceholder}>
-                  <Text style={styles.photoPlaceholderText}>📷</Text>
-                  <Text style={styles.photoPlaceholderSubtext}>Adicionar Foto</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-
-            {/* Nome */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Nome *</Text>
-              <TextInput
-                style={styles.input}
-                value={formData.name}
-                onChangeText={(text) => setFormData({ ...formData, name: text })}
-                placeholder="Nome do pet"
-                placeholderTextColor="#999"
-              />
-            </View>
-
-            {/* Raça */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Raça *</Text>
-              <TextInput
-                style={styles.input}
-                value={formData.breed}
-                onChangeText={(text) => setFormData({ ...formData, breed: text })}
-                placeholder="Raça do pet"
-                placeholderTextColor="#999"
-              />
-            </View>
-
-            {/* Idade */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Idade *</Text>
-              <TextInput
-                style={styles.input}
-                value={formData.age}
-                onChangeText={(text) => setFormData({ ...formData, age: text })}
-                placeholder="Idade em anos"
-                placeholderTextColor="#999"
-                keyboardType="numeric"
-              />
-            </View>
-
-            {/* Tipo de Animal */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Tipo de Animal</Text>
-              <View style={styles.radioGroup}>
-                <TouchableOpacity
-                  style={styles.radioOption}
-                  onPress={() => setFormData({ ...formData, animalType: "cachorro" })}
-                >
-                  <View style={[styles.radio, formData.animalType === "cachorro" && styles.radioSelected]} />
-                  <Text style={styles.radioText}>🐕 Cachorro</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.radioOption}
-                  onPress={() => setFormData({ ...formData, animalType: "gato" })}
-                >
-                  <View style={[styles.radio, formData.animalType === "gato" && styles.radioSelected]} />
-                  <Text style={styles.radioText}>🐱 Gato</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* Pedigree */}
-            <TouchableOpacity
-              style={styles.checkboxContainer}
-              onPress={() => setFormData({ ...formData, hasPedigree: !formData.hasPedigree })}
-            >
-              <View style={[styles.checkbox, formData.hasPedigree && styles.checkboxSelected]}>
-                {formData.hasPedigree && <Text style={styles.checkmark}>✓</Text>}
-              </View>
-              <Text style={styles.checkboxText}>🏆 Tem Pedigree</Text>
-            </TouchableOpacity>
-
-            {/* Botões */}
-            <View style={styles.modalButtons}>
-              <TouchableOpacity style={[styles.modalButton, styles.cancelButton]} onPress={closeModal}>
-                <Text style={styles.cancelButtonText}>Cancelar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.modalButton, styles.saveButton]} onPress={handleSavePet}>
-                <Text style={styles.saveButtonText}>{editMode ? "Atualizar" : "Salvar"}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      {/* Modal Customizado */}
+      <PetModal />
     </View>
   )
 }
@@ -694,29 +638,46 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+  // Estilos do Modal Customizado
+  modalContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
+  },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    padding: 16,
   },
   modalContent: {
     backgroundColor: "#fff",
     borderRadius: 24,
-    padding: 24,
     width: "100%",
     maxWidth: 400,
+    maxHeight: screenHeight * 0.9,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
     shadowRadius: 16,
-    elevation: 16,
+    elevation: 20,
+  },
+  modalScrollView: {
+    flex: 1,
+  },
+  modalScrollContent: {
+    padding: 24,
+    paddingBottom: 32,
   },
   modalTitle: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
+    marginBottom: 24,
     color: "#0097b2",
   },
   photoContainer: {
@@ -859,13 +820,5 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
-  },
-  itemWithIcon: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  itemIcon: {
-    fontSize: 20,
-    marginRight: 12,
   },
 })

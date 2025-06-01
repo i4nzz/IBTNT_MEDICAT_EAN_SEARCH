@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { View, Text, Image, StyleSheet, Animated, Easing } from "react-native";
 
+
 export default function SplashScreen({ navigation }) {
   const rotateValue = useRef(new Animated.Value(0)).current;
   const rotateCounterValue = useRef(new Animated.Value(0)).current;
@@ -50,7 +51,8 @@ export default function SplashScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Animated.Image 
-          source={require('C:/_source/ProjetosFaculdade/ProjetosH1/medicatEanSearch/source/img/gatinho.png')} 
+          //source={require('C:/_source/ProjetosFaculdade/ProjetosH1/medicatEanSearch/source/img/gatinho.png')}
+          source={require('../../img/gatinho.png')}  
           style={[styles.image, { transform: [{ rotate: rotateCounter }] }]}
         />
         <Animated.View style={[styles.loadingCircle, { transform: [{ rotate }] }]} />

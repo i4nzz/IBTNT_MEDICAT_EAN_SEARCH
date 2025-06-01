@@ -19,9 +19,9 @@ export const initDatabase = async () => {
       );
     `)
 
-    console.log("Database initialized successfully")
+    console.log("Pets database initialized successfully")
   } catch (error) {
-    console.error("Error initializing database:", error)
+    console.error("Error initializing pets database:", error)
     throw error
   }
 }
@@ -121,4 +121,12 @@ export const updatePet = async (id, pet) => {
     console.error("Error updating pet:", error)
     throw error
   }
+}
+
+// Função para obter a instância do banco (para usar em outros arquivos)
+export const getDatabase = () => {
+  if (!db) {
+    throw new Error("Database not initialized. Call initDatabase() first.")
+  }
+  return db
 }
