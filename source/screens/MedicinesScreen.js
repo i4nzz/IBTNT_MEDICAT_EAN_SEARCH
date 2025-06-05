@@ -13,15 +13,14 @@ import {
   ActivityIndicator,
   Dimensions,
 } from "react-native"
-import { insertPetMedicine, getPetMedicines, deletePetMedicine } from "../lib/petMedicinesDatabase"
-
-import ip from '../config/config'
+import {
+  insertPetMedicine,
+  getPetMedicines,
+  deletePetMedicine,
+  initPetMedicinesDatabase,
+} from "../lib/petMedicinesDatabase"
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window")
-
-const API_ENDPOINTS = [
-  ip[0]
-]
 
 export default function MedicinesScreen({ navigation, route }) {
   const { petId, petName } = route.params || { petId: null, petName: "Pet" }
@@ -33,13 +32,52 @@ export default function MedicinesScreen({ navigation, route }) {
   const [selectedMedicines, setSelectedMedicines] = useState([])
   const [petMedicines, setPetMedicines] = useState([])
   const [showSearchResults, setShowSearchResults] = useState(false)
-  const [currentEndpoint, setCurrentEndpoint] = useState(API_ENDPOINTS[0])
+  const [customEndpoint, setCustomEndpoint] = useState("")
+  const [showEndpointConfig, setShowEndpointConfig] = useState(false)
+
+  // Dados de exemplo para teste offline
+  const sampleMedicines = [
+    {
+      id: 1,
+      nome: "Dipirona 500mg",
+      laboratorio: "EMS",
+      tipo: "Analgésico",
+      forma_administracao: "Comprimido",
+      ean: "7891234567890",
+      indicacoes: "Dor e febre",
+    },
+    {
+      id: 2,
+      nome: "Paracetamol 750mg",
+      laboratorio: "Medley",
+      tipo: "Analgésico",
+      forma_administracao: "Comprimido",
+      ean: "7891234567891",
+      indicacoes: "Dor de cabeça e febre",
+    },
+    {
+      id: 3,
+      nome: "Ibuprofeno 600mg",
+      laboratorio: "Eurofarma",
+      tipo: "Anti-inflamatório",
+      forma_administracao: "Comprimido",
+      ean: "7891234567892",
+      indicacoes: "Dor e inflamação",
+    },
+  ]
 
   useEffect(() => {
     const initializeMedicinesScreen = async () => {
       if (petId) {
-        await new Promise((resolve) => setTimeout(resolve, 500))
-        await loadPetMedicines()
+        try {
+          // Garantir que a tabela de medicamentos do pet existe
+          await initPetMedicinesDatabase()
+          await new Promise((resolve) => setTimeout(resolve, 500))
+          await loadPetMedicines()
+        } catch (error) {
+          console.error("❌ Error initializing medicines screen:", error)
+          Alert.alert("Erro de Inicialização", "Erro ao inicializar a tela de medicamentos")
+        }
       }
     }
 
@@ -54,7 +92,24 @@ export default function MedicinesScreen({ navigation, route }) {
       console.log("✅ Pet medicines loaded:", medicines.length)
     } catch (error) {
       console.error("❌ Error loading pet medicines:", error)
-      Alert.alert("Erro", "Não foi possível carregar os medicamentos do pet")
+      if (error.message.includes("no such table")) {
+        Alert.alert("Erro de Banco de Dados", "A tabela de medicamentos não foi criada. Deseja recriar as tabelas?", [
+          { text: "Cancelar", style: "cancel" },
+          {
+            text: "Recriar",
+            onPress: async () => {
+              try {
+                await initPetMedicinesDatabase()
+                await loadPetMedicines()
+              } catch (err) {
+                Alert.alert("Erro", "Não foi possível recriar as tabelas")
+              }
+            },
+          },
+        ])
+      } else {
+        Alert.alert("Erro", "Não foi possível carregar os medicamentos do pet")
+      }
     } finally {
       setLoading(false)
     }
@@ -64,12 +119,13 @@ export default function MedicinesScreen({ navigation, route }) {
     try {
       console.log(`🧪 Testing endpoint: ${endpoint}`)
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 segundos timeout
+      const timeoutId = setTimeout(() => controller.abort(), 8000) // 8 segundos timeout
 
       const response = await fetch(endpoint, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         signal: controller.signal,
       })
@@ -93,27 +149,47 @@ export default function MedicinesScreen({ navigation, route }) {
   const searchMedicines = async () => {
     try {
       setSearchLoading(true)
-      console.log("🔍 Searching for working endpoint...")
+      console.log("🔍 Searching for medicines...")
+
+      // Lista de endpoints para testar
+      const endpoints = [
+        customEndpoint,
+        "http://192.168.1.141:3000/Medicamentos",
+        "http://10.0.0.141:3000/Medicamentos",
+        "http://172.16.0.141:3000/Medicamentos",
+        "http://desktop-hv1felh:3000/Medicamentos",
+        "http://localhost:3000/Medicamentos",
+      ].filter((endpoint) => endpoint && endpoint.trim() !== "")
 
       let workingEndpoint = null
       let medicinesData = []
 
-      
-      for (const endpoint of API_ENDPOINTS) {
+      // Testar endpoints configurados
+      for (const endpoint of endpoints) {
         const result = await testEndpoint(endpoint)
         if (result.success) {
           workingEndpoint = endpoint
           medicinesData = result.data
-          setCurrentEndpoint(endpoint)
           break
         }
       }
 
+      // Se nenhum endpoint funcionar, usar dados de exemplo
       if (!workingEndpoint) {
-        throw new Error("Nenhum endpoint está acessível")
-      }
+        console.log("🔄 Using sample data for testing...")
+        medicinesData = sampleMedicines
 
-      console.log("📊 API response:", medicinesData.length, "medicines found")
+        Alert.alert(
+          "Modo Offline",
+          "Não foi possível conectar ao servidor. Usando dados de exemplo.\n\nPara conectar ao servidor:\n1. Verifique se o servidor está rodando\n2. Configure o IP correto\n3. Verifique a conectividade de rede",
+          [{ text: "OK" }, { text: "Configurar IP", onPress: () => setShowEndpointConfig(true) }],
+        )
+      } else {
+        Alert.alert(
+          "Sucesso",
+          `Conectado ao servidor!\nEndpoint: ${workingEndpoint}\nMedicamentos: ${medicinesData.length}`,
+        )
+      }
 
       // Filtrar por texto de busca se houver
       let filteredData = medicinesData
@@ -131,43 +207,13 @@ export default function MedicinesScreen({ navigation, route }) {
 
       setMedicines(filteredData)
       setShowSearchResults(true)
-
-      // Mostrar qual endpoint está funcionando
-      Alert.alert(
-        "Sucesso na busca",
-        `\nMedicamentos encontrados: ${filteredData.length}`,
-      )
     } catch (error) {
       console.error("❌ Error fetching medicines:", error)
-      Alert.alert(
-        "Erro de Conexão",
-        `Não foi possível conectar a nenhum servidor.\n\n` +
-          `Endpoints testados:\n${API_ENDPOINTS.join("\n")}\n\n` +
-          `Soluções:\n` +
-          `• Verifique se o servidor está rodando\n` +
-          `• Configure o IP correto da sua máquina\n` +
-          `• Verifique se o dispositivo está na mesma rede\n` +
-          `• Desative firewall/antivírus temporariamente\n\n` +
-          `Erro: ${error.message}`,
-      )
+      Alert.alert("Erro", `Erro ao buscar medicamentos: ${error.message}`)
     } finally {
       setSearchLoading(false)
     }
   }
-
-  // const showEndpointConfig = () => {
-  //   Alert.alert(
-  //     "Configurar Endpoint",
-  //     `Endpoint atual: ${currentEndpoint}\n\nPara alterar o IP:\n1. Descubra o IP da sua máquina\n2. Substitua no código\n3. Reinicie o app`,
-  //     [
-  //       { text: "OK" },
-  //       {
-  //         text: "Testar Novamente",
-  //         onPress: searchMedicines,
-  //       },
-  //     ],
-  //   )
-  // }
 
   const toggleMedicineSelection = (medicine) => {
     const isSelected = selectedMedicines.find((m) => m.id === medicine.id)
@@ -286,6 +332,55 @@ export default function MedicinesScreen({ navigation, route }) {
     </View>
   )
 
+  // Modal de configuração de endpoint
+  const EndpointConfigModal = () => {
+    if (!showEndpointConfig) return null
+
+    return (
+      <View style={styles.modalContainer}>
+        <TouchableOpacity style={styles.modalOverlay} onPress={() => setShowEndpointConfig(false)}>
+          <TouchableOpacity style={styles.endpointModalContent} activeOpacity={1} onPress={(e) => e.stopPropagation()}>
+            <Text style={styles.modalTitle}>Configurar Servidor</Text>
+
+            <Text style={styles.modalLabel}>URL do Servidor:</Text>
+            <TextInput
+              style={styles.endpointInput}
+              value={customEndpoint}
+              onChangeText={setCustomEndpoint}
+              placeholder="http://192.168.1.141:3000/Medicamentos"
+              placeholderTextColor="#999"
+            />
+
+            <Text style={styles.helpText}>
+              Dicas:{"\n"}• Descubra seu IP: ipconfig (Windows) ou ifconfig (Mac/Linux){"\n"}• Formato:
+              http://SEU_IP:3000/Medicamentos{"\n"}• Exemplo: http://192.168.1.100:3000/Medicamentos
+            </Text>
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.cancelButton]}
+                onPress={() => setShowEndpointConfig(false)}
+              >
+                <Text style={styles.cancelButtonText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.saveButton]}
+                onPress={() => {
+                  setShowEndpointConfig(false)
+                  if (customEndpoint.trim()) {
+                    searchMedicines()
+                  }
+                }}
+              >
+                <Text style={styles.saveButtonText}>Testar</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
@@ -299,6 +394,9 @@ export default function MedicinesScreen({ navigation, route }) {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>🔍 Buscar Medicamentos</Text>
+            <TouchableOpacity style={styles.configButton} onPress={() => setShowEndpointConfig(true)}>
+              <Text style={styles.configButtonText}>⚙️</Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.searchContainer}>
@@ -330,9 +428,6 @@ export default function MedicinesScreen({ navigation, route }) {
           >
             <Text style={styles.searchAllButtonText}>📋 Ver Todos os Medicamentos</Text>
           </TouchableOpacity>
-
-          {/* Status da conexão */}
-          
         </View>
 
         {/* Resultados da Busca */}
@@ -398,6 +493,9 @@ export default function MedicinesScreen({ navigation, route }) {
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton} activeOpacity={0.8}>
         <Text style={styles.backButtonText}>← Voltar</Text>
       </TouchableOpacity>
+
+      {/* Modal de configuração */}
+      <EndpointConfigModal />
     </View>
   )
 }
@@ -645,15 +743,81 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontStyle: "italic",
   },
-  statusContainer: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    padding: 8,
-    borderRadius: 8,
-    marginTop: 8,
+  // Estilos do modal
+  modalContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
   },
-  statusText: {
-    color: "#fff",
-    fontSize: 12,
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
+  },
+  endpointModalContent: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 24,
+    width: "100%",
+    maxWidth: 400,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
     textAlign: "center",
+    marginBottom: 20,
+    color: "#0097b2",
+  },
+  modalLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 8,
+    color: "#333",
+  },
+  endpointInput: {
+    borderWidth: 2,
+    borderColor: "#e9ecef",
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 14,
+    marginBottom: 16,
+  },
+  helpText: {
+    fontSize: 12,
+    color: "#666",
+    marginBottom: 20,
+    lineHeight: 18,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  modalButton: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginHorizontal: 4,
+  },
+  cancelButton: {
+    backgroundColor: "#f0f0f0",
+  },
+  cancelButtonText: {
+    color: "#666",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  saveButton: {
+    backgroundColor: "#0097b2",
+  },
+  saveButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
   },
 })

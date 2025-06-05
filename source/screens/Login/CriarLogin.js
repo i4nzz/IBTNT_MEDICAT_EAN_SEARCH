@@ -37,7 +37,7 @@ export default function Login({ navigation }) {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <Image 
-          source={require('C:/_source/ProjetosFaculdade/ProjetosH1/medicatEanSearch/source/img/MEDICAT_LOGO.png')} 
+          source={require('../../../source/img/MEDICAT_LOGO.png')} 
           style={styles.image}
         />
 
