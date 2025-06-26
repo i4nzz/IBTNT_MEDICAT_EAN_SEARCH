@@ -20,6 +20,7 @@ import {
   initPetMedicinesDatabase,
 } from "../lib/petMedicinesDatabase"
 
+import ip from '../config/config'
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window")
 
 export default function MedicinesScreen({ navigation, route }) {
@@ -153,12 +154,7 @@ export default function MedicinesScreen({ navigation, route }) {
 
       // Lista de endpoints para testar
       const endpoints = [
-        customEndpoint,
-        "http://192.168.1.141:3000/Medicamentos",
-        "http://10.0.0.141:3000/Medicamentos",
-        "http://172.16.0.141:3000/Medicamentos",
-        "http://desktop-hv1felh:3000/Medicamentos",
-        "http://localhost:3000/Medicamentos",
+        ip[0]
       ].filter((endpoint) => endpoint && endpoint.trim() !== "")
 
       let workingEndpoint = null

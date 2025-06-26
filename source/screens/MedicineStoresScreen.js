@@ -38,7 +38,7 @@ export default function MedicineStoresScreen({ navigation, route }) {
 
       
       const endpoints = [
-       ip[1]
+      ip[1]
       ]
 
       let storesData = []
